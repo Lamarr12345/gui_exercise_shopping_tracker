@@ -11,8 +11,8 @@ class UserMenuWidget(QWidget):
 
         self.report_window = None
 
-        button_add_item = QPushButton("Add Purchase")
-        #button_add_item.clicked.connect(mainwindow.switchToAddItem)
+        button_add_item = QPushButton("Add Item Purchase")
+        button_add_item.clicked.connect(mainwindow.switchToAddItem)
         
         button_report = QPushButton("Generate Report")
         button_report.clicked.connect(self.generateReport)
@@ -26,10 +26,10 @@ class UserMenuWidget(QWidget):
         layout.addWidget(button_quit)
         self.setLayout(layout)
 
-    def quitAndLogout(self):
-        #todo
-        self.main_window.quitApp()
-
     def generateReport(self):
         self.report_window = ReportWindow()
         self.report_window.show()
+
+    def quitAndLogout(self):
+        #todo
+        self.main_window.quitApp()

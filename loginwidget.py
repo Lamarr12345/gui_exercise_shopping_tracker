@@ -9,24 +9,24 @@ class LoginWidget(QWidget):
         self.main_window = mainwindow
 
         label_username = QLabel("Username: ")
-        line_edit_username = QLineEdit()
+        self.line_edit_username = QLineEdit()
 
         label_password = QLabel("Password: ")
-        line_edit_password = QLineEdit()
+        self.line_edit_password = QLineEdit()
 
         button_login = QPushButton("Log In")
         button_login.clicked.connect(self.attemptLogin)
         
-        button_cancel = QPushButton("Cancle")
-        button_cancel.clicked.connect(mainwindow.switchToStartMenu)
+        button_cancel = QPushButton("Cancel")
+        button_cancel.clicked.connect(self.cancelLogin)
 
         h_layout_1 = QHBoxLayout()
         h_layout_1.addWidget(label_username)
-        h_layout_1.addWidget(line_edit_username)
+        h_layout_1.addWidget(self.line_edit_username)
 
         h_layout_2 = QHBoxLayout()
         h_layout_2.addWidget(label_password)
-        h_layout_2.addWidget(line_edit_password)
+        h_layout_2.addWidget(self.line_edit_password)
 
         h_layout_3 = QHBoxLayout()
         h_layout_3.addWidget(button_login)
@@ -41,3 +41,9 @@ class LoginWidget(QWidget):
 
     def attemptLogin(self):
         self.main_window.switchToUserMenu()
+        #self.main_window.quitApp()
+
+    def cancelLogin(self):
+        self.line_edit_username.clear()
+        self.line_edit_password.clear()
+        self.main_window.switchToStartMenu()
