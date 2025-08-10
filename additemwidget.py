@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QWidget,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
+from datetime import date
 
 #from mainwindow import MainWindow
 
@@ -81,6 +82,17 @@ class AddItemWidget(QWidget):
 
 
     def attemptItemEntry(self):
+
+        day = self.line_edit_day.text()
+        month = self.line_edit_month.text()
+        year = self.line_edit_year.text()
+        item_purchased = self.line_edit_item_puchased.text()
+        item_cost = self.line_edit_item_cost.text()
+        item_weight = self.line_edit_item_weight.text()
+        item_quantity = self.line_edit_item_quantity.text()
+
+
+
         self.main_window.switchToUserMenu()
 
     def cancelItemEntry(self):

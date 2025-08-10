@@ -7,7 +7,7 @@ class HandleData():
 
         self.file_path = filepath
 
-        self.loadDataFromFile() #self.user_base gets initialized
+        self.__loadDataFromFile() #self.user_base gets initialized
         self.current_user_data = None
 
     #--------------------------------------------------------------------------------
@@ -42,11 +42,15 @@ class HandleData():
         return [x for x in self.user_base if x["username"] == username][0]["user_data"]["password"] == self.__encryptPassword(password)
 
     def getCurrentUserData(self):
-        return self.current_user_data
+        if self.current_user_data:
+            return self.current_user_data
+        print("getCurrentUserData(): Current user not set error.")
 
     def setCurrentUserData(self,username):
         self.current_user_data = [x for x in self.user_base if x["username"] == username][0]
 
+    def freeCurrentUserData(self):
+        self.current_user_data = None
 
     def getCurrentUserLoggedIn(self):
         if self.current_user_data:
@@ -61,17 +65,17 @@ class HandleData():
         print("setCurrentUserLoggedIn(): Current user not set error.")
 
 
-    def getCurrentUserPurchaseHistory(self):
-        pass
-
     def addItemToCurrentUserPurchaseHistory(self):
         pass
+        # if self.current_user_data:
+        #     #code
+        # print("addItemToCurrentUserPurchaseHistory(): Current user not set error.")
 
     #----------------------------------------------------------------------------------------------
 
     # Private methods 
 
-    def loadDataFromFile(self):
+    def __loadDataFromFile(self):
         try: 
             with open(self.file_path,"r") as openfile:
                 self.user_base = list(json.load(openfile))

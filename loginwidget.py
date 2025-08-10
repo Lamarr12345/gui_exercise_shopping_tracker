@@ -84,8 +84,9 @@ class LoginWidget(QWidget):
         else:
             self.data_handler.setCurrentUserLoggedIn(True)
 
+        self.line_edit_username.clear()
+        self.line_edit_password.clear()
         self.main_window.switchToUserMenu()
-        #self.main_window.quitApp()
 
     def cancelLogin(self):
         self.line_edit_username.clear()

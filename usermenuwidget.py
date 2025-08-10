@@ -18,19 +18,28 @@ class UserMenuWidget(QWidget):
         button_report = QPushButton("Generate Report")
         button_report.clicked.connect(self.generateReport)
 
-        button_quit = QPushButton("Quit and Log Out")
-        button_quit.clicked.connect(self.quitAndLogout)
+        button_logout = QPushButton("Log Out")
+        button_logout.clicked.connect(self.logOut)
+
+        button_logout_and_quit = QPushButton("Log Out and Quit")
+        button_logout_and_quit.clicked.connect(self.logoutAndQuit)
 
         layout = QVBoxLayout()
         layout.addWidget(button_add_item)
         layout.addWidget(button_report)
-        layout.addWidget(button_quit)
+        layout.addWidget(button_logout)
+        layout.addWidget(button_logout_and_quit)
         self.setLayout(layout)
 
     def generateReport(self):
         self.report_window = ReportWindow(self.data_handler)
         self.report_window.show()
 
-    def quitAndLogout(self):
+    def logOut(self):
+        self.data_handler.setCurrentUserLoggedIn(False)
+        self.data_handler.freeCurrentUserData()
+        self.main_window.switchToStartMenu()
+
+    def logoutAndQuit(self):
         self.data_handler.setCurrentUserLoggedIn(False)
         self.main_window.quitApp()
