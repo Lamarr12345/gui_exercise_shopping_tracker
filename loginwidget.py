@@ -85,6 +85,7 @@ class LoginWidget(QWidget):
         else:
             self.data_handler.setCurrentUserLoggedIn(True)
 
+        self.attempt_count = 3
         self.line_edit_username.clear()
         self.line_edit_password.clear()
         self.main_window.switchToUserMenu()
