@@ -76,6 +76,7 @@ class LoginWidget(QWidget):
                 return
             else:
                 self.main_window.quitApp()
+                return
         
         self.data_handler.setCurrentUserData(username)
 
