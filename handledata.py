@@ -7,10 +7,8 @@ class HandleData():
 
         self.file_path = filepath
 
-        self.__loadDataFromFile() #self.user_base gets initialized
+        self.loadDataFromFile() #self.user_base gets initialized
         self.current_user_data = None
-        self.current_user_data_logged_in = None
-        self.current_user_purchase_history = None
 
     #--------------------------------------------------------------------------------
 
@@ -19,7 +17,7 @@ class HandleData():
     def addUserToDataBaseUserBase(self,username,password,phone_number):
 
         self.user_base.append(
-                {
+            {
                 "username" : username,
                 "loggedIn" : False,
                 "user_data" :{
@@ -33,8 +31,6 @@ class HandleData():
         self.__writeDataToFile()
     
 
-            
-
 
     def checkIfUsernameTaken(self,username):
         if not self.user_base:
@@ -42,19 +38,27 @@ class HandleData():
         else:
             return len([x for x in self.user_base if x["username"] == username]) != 0
 
+    def checkPasswordMatch(self,username,password):
+        return [x for x in self.user_base if x["username"] == username][0]["user_data"]["password"] == self.__encryptPassword(password)
 
     def getCurrentUserData(self):
-        pass
+        return self.current_user_data
 
-    def setCurrentUserData(self):
-        pass
+    def setCurrentUserData(self,username):
+        self.current_user_data = [x for x in self.user_base if x["username"] == username][0]
 
 
     def getCurrentUserLoggedIn(self):
-        pass
+        if self.current_user_data:
+            return self.current_user_data["loggedIn"]
+        print("getCurrentUserLoggedIn(): Current user not set error.")
     
-    def setCurrentUserLoggedIn(self):
-        pass
+    def setCurrentUserLoggedIn(self,setstatus:bool):
+        if self.current_user_data:
+            self.current_user_data["loggedIn"] = setstatus
+            self.__writeDataToFile()
+            return
+        print("setCurrentUserLoggedIn(): Current user not set error.")
 
 
     def getCurrentUserPurchaseHistory(self):
@@ -67,7 +71,7 @@ class HandleData():
 
     # Private methods 
 
-    def __loadDataFromFile(self):
+    def loadDataFromFile(self):
         try: 
             with open(self.file_path,"r") as openfile:
                 self.user_base = list(json.load(openfile))

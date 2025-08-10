@@ -10,8 +10,6 @@ class RegisterWidget(QWidget):
         self.main_window = mainwindow
         self.data_handler = datahandler
 
-        self.pop_up = None
-
         label_username = QLabel("Username: ")
         self.line_edit_username = QLineEdit()
 
@@ -73,7 +71,7 @@ class RegisterWidget(QWidget):
         if not self.line_edit_phone.text():
             missing_input_messages.append("- phone number missing")
         if missing_input_messages:
-            self.pop_up = QMessageBox.warning(self,"Missing inputs", "\n".join(missing_input_messages), QMessageBox.Ok)
+            QMessageBox.warning(self,"Missing inputs", "\n".join(missing_input_messages), QMessageBox.Ok)
             return
         
         #check for empty spaces
@@ -83,12 +81,12 @@ class RegisterWidget(QWidget):
         if re.search(r" ",self.line_edit_password.text()):
             empty_space_messages.append("- password has empty space(s)")
         if empty_space_messages:
-            self.pop_up = QMessageBox.warning(self,"Empty spaces", "\n".join(empty_space_messages), QMessageBox.Ok)
+            QMessageBox.warning(self,"Empty spaces", "\n".join(empty_space_messages), QMessageBox.Ok)
             return
 
         #check if user already exists
         if self.data_handler.checkIfUsernameTaken(self.line_edit_username.text()):
-            self.pop_up = QMessageBox.warning(self,"Username taken", "Username already taken.", QMessageBox.Ok)
+            QMessageBox.warning(self,"Username taken", "Username already taken.", QMessageBox.Ok)
             return
         
         #check password conditions
@@ -111,20 +109,20 @@ class RegisterWidget(QWidget):
         if self.line_edit_password.text() != self.line_edit_confirm_password.text():
             password_errors.append("- password and password confirmation do not match")
         if password_errors:
-            self.pop_up = QMessageBox.warning(self,"Password errors", "\n".join(password_errors), QMessageBox.Ok)
+            QMessageBox.warning(self,"Password errors", "\n".join(password_errors), QMessageBox.Ok)
             return
 
         #check valid phone number
         phone_number = self.line_edit_phone.text().replace(" ","").replace("-","").replace("/","")
         pattern_phone = r"^\+49[0-9]{3,15}$"
         if not re.search(pattern_phone,phone_number):
-            self.pop_up = QMessageBox.warning(self,"Invalid phone number", "Invalid phone number.\n- german phone number(starts with +49)\n- between 3 and 15 numbers long", QMessageBox.Ok)
+            QMessageBox.warning(self,"Invalid phone number", "Invalid phone number.\n- german phone number(starts with +49)\n- between 3 and 15 numbers long", QMessageBox.Ok)
             return
         
         #add user to database
         self.data_handler.addUserToDataBaseUserBase(self.line_edit_username.text(),self.line_edit_password.text(),phone_number)
 
-        self.pop_up = QMessageBox.information(self,"Success", f"Account for user {self.line_edit_username.text()} successfully created!", QMessageBox.Ok)
+        QMessageBox.information(self,"Success", f"Account for user '{self.line_edit_username.text()}' successfully created!", QMessageBox.Ok)
 
         self.line_edit_username.clear()
         self.line_edit_password.clear()

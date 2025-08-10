@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget,QStackedWidget,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
+from PySide6.QtWidgets import QWidget,QStackedWidget,QMessageBox,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
 
 from handledata import HandleData
 from additemwidget import AddItemWidget
@@ -20,9 +20,9 @@ class MainWindow(QWidget):
         #initialize all widget frames
         self.star_menu = StartMenuWidget(self)
         self.register = RegisterWidget(self,self.data_handler)
-        self.login = LoginWidget(self)             
-        self.user_menu = UserMenuWidget(self)
-        self.add_item = AddItemWidget(self)
+        self.login = LoginWidget(self,self.data_handler)             
+        self.user_menu = UserMenuWidget(self,self.data_handler)
+        self.add_item = AddItemWidget(self,self.data_handler)
 
         #put widget frames into QStackWidget to switch between them later
         self.widget_stack = QStackedWidget(self)

@@ -4,10 +4,11 @@ from PySide6.QtWidgets import QWidget,QComboBox,QTabWidget,QSpacerItem,QListWidg
 from reportwindow import ReportWindow
 
 class UserMenuWidget(QWidget):
-    def __init__(self,mainwindow):
+    def __init__(self,mainwindow,datahandler):
         super().__init__()
 
         self.main_window = mainwindow
+        self.data_handler = datahandler
 
         self.report_window = None
 
@@ -27,9 +28,9 @@ class UserMenuWidget(QWidget):
         self.setLayout(layout)
 
     def generateReport(self):
-        self.report_window = ReportWindow()
+        self.report_window = ReportWindow(self.data_handler)
         self.report_window.show()
 
     def quitAndLogout(self):
-        #todo
+        self.data_handler.setCurrentUserLoggedIn(False)
         self.main_window.quitApp()

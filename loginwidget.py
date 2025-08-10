@@ -1,12 +1,16 @@
-from PySide6.QtWidgets import QWidget,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
+from PySide6.QtWidgets import QWidget,QMessageBox,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
+import time
 
 #from mainwindow import MainWindow
 
 class LoginWidget(QWidget):
-    def __init__(self,mainwindow):
+    def __init__(self,mainwindow,datahandler):
         super().__init__()
 
         self.main_window = mainwindow
+        self.data_handler = datahandler
+
+        self.attempt_count = 3
 
         label_username = QLabel("Username: ")
         self.line_edit_username = QLineEdit()
@@ -40,6 +44,46 @@ class LoginWidget(QWidget):
         self.setLayout(v_layout)
 
     def attemptLogin(self):
+        username = self.line_edit_username.text()
+        password = self.line_edit_password.text()
+
+        #check if input fields are empty
+        missing_input_messages = []
+        if not username:
+            missing_input_messages.append("- username missing")
+        if not password:
+            missing_input_messages.append("- password missing")
+        if missing_input_messages:
+            QMessageBox.warning(self,"Missing inputs", "\n".join(missing_input_messages), QMessageBox.Ok)
+            return
+
+        #check if user even exists
+        if not self.data_handler.checkIfUsernameTaken(username):
+            QMessageBox.warning(self,"User not found", f"Username '{username}' not found.", QMessageBox.Ok)
+            return
+        
+        #check password with attempt counterl logic
+        if not self.data_handler.checkPasswordMatch(username,password):
+            self.attempt_count = self.attempt_count - 1
+            if self.attempt_count > 0:
+                QMessageBox.warning(self,"Wrong password", f"You have '{self.attempt_count}' more {"tries" if self.attempt_count>1 else "try"}.", QMessageBox.Ok)
+                self.line_edit_password.clear()
+                return
+            elif self.attempt_count == 0:
+                QMessageBox.critical(self,"Wrong password", f"Back to the start menu.\nAfter next attempt the app will be closed.", QMessageBox.Ok)
+                self.line_edit_password.clear()
+                self.main_window.switchToStartMenu()
+                return
+            else:
+                self.main_window.quitApp()
+        
+        self.data_handler.setCurrentUserData(username)
+
+        if self.data_handler.getCurrentUserLoggedIn():
+            QMessageBox.warning(self,"Warning", "Not logged out properly last time.", QMessageBox.Ok)
+        else:
+            self.data_handler.setCurrentUserLoggedIn(True)
+
         self.main_window.switchToUserMenu()
         #self.main_window.quitApp()
 

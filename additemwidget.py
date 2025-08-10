@@ -9,10 +9,11 @@ from PySide6.QtWidgets import QWidget,QComboBox,QTabWidget,QSpacerItem,QListWidg
 # - The quantity purchased (should be an integer from 1 and above).
 
 class AddItemWidget(QWidget):
-    def __init__(self,mainwindow):
+    def __init__(self,mainwindow,datahandler):
         super().__init__()
 
         self.main_window = mainwindow
+        self.data_handler = datahandler
 
         label_date = QLabel("Date of purchase: ")
         label_day = QLabel("Day")
