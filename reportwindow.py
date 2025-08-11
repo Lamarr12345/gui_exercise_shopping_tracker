@@ -1,31 +1,46 @@
-from PySide6.QtWidgets import QWidget,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
+from PySide6.QtWidgets import QWidget,QTextEdit,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
 from datetime import date
 from PySide6.QtCore import Qt
 
 class ReportWindow(QWidget):
-    def __init__(self,datahandler):
+    def __init__(self,userdata):
         super().__init__()
 
-        username = datahandler.getCurrentUserData()["username"]
-        phone_number = datahandler.getCurrentUserData()["user_data"]["phone_number"]
-        purchase_history = datahandler.getCurrentUserData()["user_data"]["purchase_history"]
+        self.setWindowTitle("Purchase Report")
 
-        label_headline = QLabel("PURCHASE EXPENSES REPORT")
+        username = userdata["username"]
+        phone_number = userdata["user_data"]["phone_number"]
+        purchase_history = userdata["user_data"]["purchase_history"]
 
-        label_username = QLabel(username)
-        label_phone_number = QLabel(phone_number)
-        label_today = QLabel(date.today().isoformat())
+        print(username)
 
-        h_layout_1 = QHBoxLayout()
-        h_layout_1.addWidget(label_headline)
+        html_text_edit = QTextEdit()
+        html_text_edit.setTextInteractionFlags(Qt.NoTextInteraction) 
 
-        h_layout_2 = QHBoxLayout()
-        h_layout_2.addWidget(label_username,1)
-        h_layout_2.addWidget(label_phone_number,100)
-        h_layout_2.addWidget(label_today,1)
+        html_text_edit.setHtml(f"<h1>Purchase Report</h1>{username}")
 
-        v_layout = QVBoxLayout()
-        v_layout.addLayout(h_layout_1)
-        v_layout.addLayout(h_layout_2)
-        self.setLayout(v_layout)
+        h_layout = QHBoxLayout()
+        h_layout.addWidget(html_text_edit)
+        self.setLayout(h_layout)
+
+
+
+        # label_headline = QLabel("PURCHASE EXPENSES REPORT")
+
+        # label_username = QLabel(username)
+        # label_phone_number = QLabel(phone_number)
+        # label_today = QLabel(date.today().isoformat())
+
+        # h_layout_1 = QHBoxLayout()
+        # h_layout_1.addWidget(label_headline)
+
+        # h_layout_2 = QHBoxLayout()
+        # h_layout_2.addWidget(label_username,1)
+        # h_layout_2.addWidget(label_phone_number,100)
+        # h_layout_2.addWidget(label_today,1)
+
+        # v_layout = QVBoxLayout()
+        # v_layout.addLayout(h_layout_1)
+        # v_layout.addLayout(h_layout_2)
+        # self.setLayout(v_layout)
 

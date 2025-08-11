@@ -33,7 +33,7 @@ class UserMenuWidget(QWidget):
 
     def generateReport(self):
         if self.data_handler.checkIfCurrentUserPurchaseHistoryNotEmpty():
-            self.report_window = ReportWindow(self.data_handler)
+            self.report_window = ReportWindow(self.data_handler.getCurrentUserData())
             self.report_window.show()
         else:
             QMessageBox.information(self,"No Purchases", "There are no purchases in the purchase history.\nPress 'Add Item Purchase' to add some.", QMessageBox.Ok)
