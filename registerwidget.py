@@ -15,9 +15,11 @@ class RegisterWidget(QWidget):
 
         label_password = QLabel("Password: ")
         self.line_edit_password = QLineEdit()
+        self.line_edit_password.setEchoMode(QLineEdit.Password)
 
         label_confirm_password = QLabel("Confirm Password: ")
         self.line_edit_confirm_password = QLineEdit()
+        self.line_edit_confirm_password.setEchoMode(QLineEdit.Password)
 
         label_phone = QLabel("Phone Number: ")
         self.line_edit_phone = QLineEdit()

@@ -6,7 +6,6 @@ class StartMenuWidget(QWidget):
     def __init__(self,mainwindow):
         super().__init__()
 
-        #self.main_window = mainwindow
 
         button_register = QPushButton("Create Account")
         button_register.clicked.connect(mainwindow.switchToRegister)
@@ -22,13 +21,3 @@ class StartMenuWidget(QWidget):
         layout.addWidget(button_login)
         layout.addWidget(button_quit)
         self.setLayout(layout)
-
-
-    #def goToRegisterPage(self):
-    #    pass
-
-    #def goToLoginPage(self):
-    #    pass
-
-    #def quitApp(self):
-    #    self.main_window.quitApp()

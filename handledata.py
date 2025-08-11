@@ -58,18 +58,40 @@ class HandleData():
         print("getCurrentUserLoggedIn(): Current user not set error.")
     
     def setCurrentUserLoggedIn(self,setstatus:bool):
-        if self.current_user_data:
-            self.current_user_data["loggedIn"] = setstatus
-            self.__writeDataToFile()
+        if not self.current_user_data:
+            print("setCurrentUserLoggedIn(): Current user not set error.")
             return
-        print("setCurrentUserLoggedIn(): Current user not set error.")
+        self.current_user_data["loggedIn"] = setstatus
+        self.__writeDataToFile()
 
 
-    def addItemToCurrentUserPurchaseHistory(self):
-        pass
-        # if self.current_user_data:
-        #     #code
-        # print("addItemToCurrentUserPurchaseHistory(): Current user not set error.")
+    def addItemToCurrentUserPurchaseHistory(self,date,name,cost,weight,quantity):
+        if not self.current_user_data:
+            print("addItemToCurrentUserPurchaseHistory(): Current user not set error.")
+            return
+        
+        self.current_user_data["user_data"]["purchase_history"].append(
+                {
+                    "puchase_date" : date,
+                    "item_purchased" : name,
+                    "item_price" : cost,
+                    "item_weight" : weight,
+                    "item_quantity" : quantity
+                }
+            )
+        
+        self.__writeDataToFile()
+
+
+    def checkIfCurrentUserPurchaseHistoryNotEmpty(self):
+        if not self.current_user_data:
+            print("checkIfCurrentUserPurchaseHistoryNotEmpty(): Current user not set error.")
+            return
+        
+        if self.current_user_data["user_data"]["purchase_history"]:
+            return True
+        return False
+    
 
     #----------------------------------------------------------------------------------------------
 

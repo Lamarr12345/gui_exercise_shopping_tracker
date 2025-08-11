@@ -17,6 +17,7 @@ class LoginWidget(QWidget):
 
         label_password = QLabel("Password: ")
         self.line_edit_password = QLineEdit()
+        self.line_edit_password.setEchoMode(QLineEdit.Password)
 
         button_login = QPushButton("Log In")
         button_login.clicked.connect(self.attemptLogin)

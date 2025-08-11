@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
+from PySide6.QtWidgets import QWidget,QMessageBox,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
 
 #from mainwindow import MainWindow
 from reportwindow import ReportWindow
@@ -32,8 +32,11 @@ class UserMenuWidget(QWidget):
         self.setLayout(layout)
 
     def generateReport(self):
-        self.report_window = ReportWindow(self.data_handler)
-        self.report_window.show()
+        if self.data_handler.checkIfCurrentUserPurchaseHistoryNotEmpty():
+            self.report_window = ReportWindow(self.data_handler)
+            self.report_window.show()
+        else:
+            QMessageBox.information(self,"No Purchases", "There are no purchases in the purchase history.\nPress 'Add Item Purchase' to add some.", QMessageBox.Ok)
 
     def logOut(self):
         self.data_handler.setCurrentUserLoggedIn(False)
