@@ -13,36 +13,54 @@ class ReportWindow(QWidget):
         purchase_history = userdata["user_data"]["purchase_history"]
         today = date.today()
 
+        shipping_rate = 1 #EUR/kg
+        spending_limit = 500
+
+        earliest_purchase = min([x["purchase_date"] for x in purchase_history],key = lambda y : date.fromisoformat(y))
+        latest_purchase = max([x["purchase_date"] for x in purchase_history],key = lambda y : date.fromisoformat(y))
+
+        total_item_cost = sum([x["item_price"]*x["item_quantity"] for x in purchase_history])
+        total_delivery_cost = sum([x["item_weight"]*x["item_quantity"]*shipping_rate for x in purchase_history])
+        total_cost = total_item_cost + total_delivery_cost
+
+        most_expensive_item = max(purchase_history,key=lambda x : x["item_price"])
+        least_expensive_item = min(purchase_history,key=lambda x : x["item_price"])
+
+        average_cost = total_item_cost / sum([x["item_quantity"] for x in purchase_history])
+
+        if total_cost > spending_limit:
+            exceeded_spending_limit = True
+        else:
+            exceeded_spending_limit = False
 
 
         v_layout = QVBoxLayout()
         v_layout.addWidget(QLabel(""))
-        v_layout.addWidget(QLabel("         PURCHASE EXPENSES REPORT"))
+        v_layout.addWidget(QLabel("              PURCHASE EXPENSES REPORT"))
         v_layout.addWidget(QLabel(""))
-        v_layout.addWidget(QLabel(f"{username}                {phone_number}              {today.isoformat()}"))
+        v_layout.addWidget(QLabel(f"{username}                 {phone_number}              {today.isoformat()}"))
         v_layout.addWidget(QLabel(""))
-        # v_layout.addWidget(QLabel(f"You have spend a total of {total_cost} EUR on Amazon purchases {"between "+earliest_purchase+" and "+latest_purchase if earliest_purchase != latest_purchase else "on "+latest_purchase}."))
-        # v_layout.addWidget(QLabel(""))
-        # v_layout.addWidget(QLabel(f"TOTAL ITEM COST         {total_item_cost} (excluding delivery)"))
-        # v_layout.addWidget(QLabel(f"TOTAL DELIVERY COST     {total_delivery_cost}"))
-        # v_layout.addWidget(QLabel(""))
-        # v_layout.addWidget(QLabel(f"MOST EXPENSIVE:         {most_expensive_item["item_purchased"]}"))
-        # v_layout.addWidget(QLabel(f"Price per item:         {most_expensive_item["item_price"]} (including delivery)"))
-        # v_layout.addWidget(QLabel(f"Quantity bought:        {most_expensive_item["item_quantity"]}"))
-        # v_layout.addWidget(QLabel(f"Delivery cost per item: {round(most_expensive_item["item_weight"]*delivery_weight_cost,2)}"))
-        # v_layout.addWidget(QLabel(""))
-        # v_layout.addWidget(QLabel(f"LEAST EXPENSIVE:        {least_expensive_item["item_purchased"]}"))
-        # v_layout.addWidget(QLabel(f"Price per item:         {least_expensive_item["item_price"]} (including delivery)"))
-        # v_layout.addWidget(QLabel(f"Quantity bought:        {least_expensive_item["item_quantity"]}"))
-        # v_layout.addWidget(QLabel(f"Delivery cost per item: {round(least_expensive_item["item_weight"]*delivery_weight_cost,2)}"))
-        # v_layout.addWidget(QLabel(""))
-        # v_layout.addWidget(QLabel(f"AVERAGE ITEMM COST      {average_cost} (including delivery)"))
-        # v_layout.addWidget(QLabel(""))
-        # if exceeded_spending_limit:
-        #     v_layout.addWidget(QLabel(f"The spending limit of {spending_limit} EUR has been exceeded by {total_cost-spending_limit} EUR."))
-        # else:
-        #     v_layout.addWidget(QLabel(f"The spending limit of {spending_limit} EUR has not been exceeded."))
-        # print("---------------------------------------------------------------------------")
+        v_layout.addWidget(QLabel(f"You have spend a total of {total_cost:.2f} EUR on Amazon purchases\n{"between "+earliest_purchase+" and "+latest_purchase if earliest_purchase != latest_purchase else "on "+latest_purchase}."))
+        v_layout.addWidget(QLabel(""))
+        v_layout.addWidget(QLabel(f"TOTAL ITEM COST:            {total_item_cost}"))
+        v_layout.addWidget(QLabel(f"TOTAL DELIVERY COST:     {total_delivery_cost}"))
+        v_layout.addWidget(QLabel(""))
+        v_layout.addWidget(QLabel(f"MOST EXPENSIVE:         {most_expensive_item["item_purchased"]}"))
+        v_layout.addWidget(QLabel(f"Price per item:             {most_expensive_item["item_price"]}"))
+        v_layout.addWidget(QLabel(f"Quantity bought:          {most_expensive_item["item_quantity"]}"))
+        v_layout.addWidget(QLabel(f"Delivery cost per item: {(most_expensive_item["item_weight"]*shipping_rate):.2f}"))
+        v_layout.addWidget(QLabel(""))
+        v_layout.addWidget(QLabel(f"LEAST EXPENSIVE:        {least_expensive_item["item_purchased"]}"))
+        v_layout.addWidget(QLabel(f"Price per item:             {least_expensive_item["item_price"]}"))
+        v_layout.addWidget(QLabel(f"Quantity bought:          {least_expensive_item["item_quantity"]}"))
+        v_layout.addWidget(QLabel(f"Delivery cost per item: {(least_expensive_item["item_weight"]):.2f}"))
+        v_layout.addWidget(QLabel(""))
+        v_layout.addWidget(QLabel(f"AVERAGE ITEM COST:      {average_cost:.2f}"))
+        v_layout.addWidget(QLabel(""))
+        if exceeded_spending_limit:
+            v_layout.addWidget(QLabel(f"The spending limit of {(spending_limit):.2f} EUR has been exceeded by {(total_cost-spending_limit):.2f} EUR."))
+        else:
+            v_layout.addWidget(QLabel(f"The spending limit of {(spending_limit):.2f} EUR has not been exceeded."))
         self.setLayout(v_layout)
 
 

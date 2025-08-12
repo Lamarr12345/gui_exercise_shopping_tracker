@@ -72,7 +72,7 @@ class HandleData():
         
         self.current_user_data["user_data"]["purchase_history"].append(
                 {
-                    "puchase_date" : date,
+                    "purchase_date" : date,
                     "item_purchased" : name,
                     "item_price" : cost,
                     "item_weight" : weight,

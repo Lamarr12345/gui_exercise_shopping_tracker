@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget,QMessageBox,QComboBox,QTabWidget,QSpacerItem,QListWidget,QAbstractItemView,QGroupBox,QCheckBox,QRadioButton,QButtonGroup,QLabel,QGridLayout,QVBoxLayout,QHBoxLayout,QPushButton,QSizePolicy,QLineEdit
 from datetime import date
 import re
+from datetime import date
 
 #from mainwindow import MainWindow
 
@@ -24,6 +25,8 @@ class AddItemWidget(QWidget):
         self.line_edit_month = QLineEdit()
         label_year = QLabel("Year")
         self.line_edit_year = QLineEdit()
+        button_fill_today = QPushButton("Today")
+        button_fill_today.clicked.connect(self.fillToday)
 
         label_item_puchased = QLabel("Item purchased: ")
         self.line_edit_item_puchased = QLineEdit()
@@ -51,6 +54,7 @@ class AddItemWidget(QWidget):
         h_layout_1.addWidget(self.line_edit_month)
         h_layout_1.addWidget(label_year)
         h_layout_1.addWidget(self.line_edit_year)
+        h_layout_1.addWidget(button_fill_today)
 
         h_layout_2 = QHBoxLayout()
         h_layout_2.addWidget(label_item_puchased)
@@ -185,3 +189,9 @@ class AddItemWidget(QWidget):
         self.line_edit_item_weight.clear()
         self.line_edit_item_quantity.clear()
         self.main_window.switchToUserMenu()
+
+    def fillToday(self):
+        today = date.today()
+        self.line_edit_year.setText(str(today.year))
+        self.line_edit_month.setText(str(today.month))
+        self.line_edit_day.setText(str(today.day))
