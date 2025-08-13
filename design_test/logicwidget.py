@@ -10,6 +10,7 @@ class LogicWidget(QWidget,Logic):
         line_edit = QLineEdit()
         button_print_text = QPushButton("Print Text")
         button_print_text.clicked.connect(lambda : self.printText(line_edit.text()))
+        #button_print_text.clicked.connect(lambda : (self.printText(line_edit.text(),line_edit.clear())))
 
         v_layout = QVBoxLayout()
         v_layout.addWidget(button_print_something)
